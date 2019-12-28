@@ -1,10 +1,15 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 
-import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+
+import Card from 'react-bootstrap/Card'
+import CardDeck from 'react-bootstrap/CardDeck'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 
 class BlogIndex extends React.Component {
   render() {
@@ -13,36 +18,43 @@ class BlogIndex extends React.Component {
     const posts = data.allMarkdownRemark.edges
 
     return (
-      <Layout location={this.props.location} title={siteTitle}>
+      <Layout location={this.props.location} title={siteTitle} >
+        <Container>
+          <Row>
+            <CardDeck style={{
+              display: 'flex',
+              flexFlow: 'row wrap'
+            }}>
+              {posts.map(({ node }) => {
+                const title = node.frontmatter.title || node.fields.slug
+                return (
+                  <Col xs={12} sm={6} style={{ marginBottom: '50px' }}>
+                    <Link to={node.fields.slug}>
+                      <Card bg="dark" text="white">
+                        <Card.Header>
+                          <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                            {title}
+                          </Link></Card.Header>
+                        <Card.Body>
+                          <Card.Text>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: node.frontmatter.description || node.excerpt,
+                              }}
+                            />
+                            <small>read more</small>
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                )
+              })}
+            </CardDeck>
+          </Row>
+        </Container>
         <SEO title="All posts" />
-        <Bio />
-        {posts.map(({ node }) => {
-          const title = node.frontmatter.title || node.fields.slug
-          return (
-            <article key={node.fields.slug}>
-              <header>
-                <h3
-                  style={{
-                    marginBottom: rhythm(1 / 4),
-                  }}
-                >
-                  <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
-                    {title}
-                  </Link>
-                </h3>
-                <small>{node.frontmatter.date}</small>
-              </header>
-              <section>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: node.frontmatter.description || node.excerpt,
-                  }}
-                />
-              </section>
-            </article>
-          )
-        })}
-      </Layout>
+      </Layout >
     )
   }
 }
@@ -56,7 +68,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(sort: { fields: [frontmatter___title], order: DESC }) {
       edges {
         node {
           excerpt
@@ -64,7 +76,6 @@ export const pageQuery = graphql`
             slug
           }
           frontmatter {
-            date(formatString: "MMMM DD, YYYY")
             title
             description
           }

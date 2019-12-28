@@ -1,0 +1,13 @@
+body {
+    background-color: #282c34 !important;
+    min-height: 100vh !important;
+    color: white !important;
+    text-align: center !important;
+}
+
+html {
+    background-color: #282c34 !important;
+    min-height: 100vh !important;
+    font-size: calc(9px + 2vmin) !important;
+}
+
