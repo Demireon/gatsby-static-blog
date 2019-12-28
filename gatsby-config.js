@@ -3,7 +3,7 @@ module.exports = {
     title: `Dark Theme Blog`,
     author: `Ali Demirci`,
     description: `A starter dark-themed blog built with Gatsby`,
-    siteUrl: `https://gatsby-starter-blog-demo.netlify.com/`
+    siteUrl: `https://dreamy-shaw-108ad2.netlify.com/`
   },
   plugins: [
     {
